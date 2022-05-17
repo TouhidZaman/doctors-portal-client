@@ -60,7 +60,7 @@ const Signup = () => {
    }
 
    return (
-      <div className="w-2/4 mx-auto mt-8 mb-10">
+      <div className="w-3/4 lg:w-1/3 mx-auto mt-8 mb-10">
          <h3 className="my-4 text-2xl">Sign Up Form</h3>
 
          <form onSubmit={handleSubmit(handleSignUp)}>
@@ -135,7 +135,7 @@ const Signup = () => {
             )}
 
             <input
-               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+               className="btn btn-active btn-accent"
                type="submit"
                value="Sign-Up"
             />

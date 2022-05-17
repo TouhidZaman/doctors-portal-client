@@ -54,7 +54,7 @@ const Login = () => {
    }
 
    return (
-      <div className="w-2/4 mx-auto my-8">
+      <div className="w-3/4 lg:w-1/3 mx-auto my-8">
          <h3 className="my-4 text-2xl">Login Form</h3>
          <form onSubmit={handleSubmit(handleLogin)}>
             <div className="mb-6">
@@ -103,7 +103,7 @@ const Login = () => {
             </div>
             {error && <p className="text-red-400">{error?.message}</p>}
             <input
-               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+               className="btn btn-active btn-accent"
                type="submit"
                value={"login"}
             />
