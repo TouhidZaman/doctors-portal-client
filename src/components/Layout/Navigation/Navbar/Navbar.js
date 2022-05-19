@@ -4,7 +4,7 @@ import NavigationItems from "../Shared/NavigationItems/NavigationItems";
 
 const Navbar = () => {
     return (
-        <nav className="w-full lg:px-8 navbar bg-base-200">
+        <nav className="w-full lg:px-8 navbar bg-base-100">
             <div className="flex-1 px-2 mx-2">
                 <Logo className="text-2xl lg:text-3xl" />
             </div>
