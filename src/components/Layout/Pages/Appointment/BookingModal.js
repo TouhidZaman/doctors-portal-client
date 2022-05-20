@@ -5,19 +5,17 @@ import { format } from "date-fns";
 import Joi from "joi";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
+import axiosInstance from "../../../../api/axiosInstance";
+import Swal from "sweetalert2";
 
 const BookingModal = ({ date, treatment, setTreatment }) => {
-    const { name, slots } = treatment;
+    const { _id, name, slots } = treatment;
     const [user] = useAuthState(auth);
 
     //Joi Validation Schema
     const schema = Joi.object({
-        date: Joi.date().required(),
         slot: Joi.string().required(),
-        name: Joi.string().min(6).max(20).required(),
-        email: Joi.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-            .required(),
+        patientName: Joi.string().min(6).max(20).required(),
         phone: Joi.number().integer().required(),
     });
 
@@ -30,10 +28,41 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
         resolver: joiResolver(schema),
     });
 
-    //Handling Form submit
-    const handleBooking = (data) => {
-        console.log(data);
-        setTreatment(null);
+    //Handling Add Booking Appointment
+    const handleBooking = async (data) => {
+        const { slot, patientName, phone } = data;
+        const formattedDate = format(date, "PP");
+        const booking = {
+            treatmentId: _id,
+            treatment: name,
+            date: formattedDate,
+            slot,
+            patient: user.email,
+            patientName: patientName,
+            phone,
+        };
+        // console.log(booking);
+
+        await axiosInstance.post("bookings", booking).then((response) => {
+            const { data } = response;
+            console.log(data);
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: `Appointment is set, ${formattedDate} at ${slot}`,
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: `Already have an appointment on, ${data.booking?.date} at ${data.booking?.slot}`,
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }
+            setTreatment(null);
+        });
     };
 
     return (
@@ -55,9 +84,8 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
                         className="grid grid-cols-1 gap-3 justify-items-center"
                     >
                         <input
-                            {...register("date")}
                             defaultValue={format(date, "PP")}
-                            readOnly
+                            disabled
                             className="input input-bordered w-full max-w-xs"
                         />
                         <select
@@ -72,17 +100,16 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
                         </select>
                         <div className="w-full max-w-xs">
                             <input
-                                id="name"
-                                {...register("name")}
+                                id="patientName"
+                                {...register("patientName")}
                                 defaultValue={user.displayName}
                                 className="input input-bordered w-full max-w-xs"
                             />
-                            <p className="text-red-400">{errors.name?.message}</p>
+                            <p className="text-red-400">{errors.patientName?.message}</p>
                         </div>
                         <input
                             type={"email"}
-                            readOnly
-                            {...register("email")}
+                            disabled
                             defaultValue={user.email}
                             className="input input-bordered w-full max-w-xs"
                         />
@@ -90,7 +117,7 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
                             <input
                                 type={"number"}
                                 {...register("phone")}
-                                placeholder="Phone Number"
+                                placeholder="Phone number"
                                 className="input input-bordered w-full"
                             />
                             <p className="text-red-400">{errors.phone?.message}</p>
