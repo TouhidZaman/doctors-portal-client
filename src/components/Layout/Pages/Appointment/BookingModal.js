@@ -8,7 +8,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import axiosInstance from "../../../../api/axiosInstance";
 import Swal from "sweetalert2";
 
-const BookingModal = ({ date, treatment, setTreatment }) => {
+const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
     const { _id, name, slots } = treatment;
     const [user] = useAuthState(auth);
 
@@ -53,6 +53,7 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
                     showConfirmButton: false,
                     timer: 2500,
                 });
+                refetch()
             } else {
                 Swal.fire({
                     icon: "warning",
