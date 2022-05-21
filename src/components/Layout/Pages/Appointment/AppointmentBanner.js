@@ -9,7 +9,7 @@ const AppointmentBanner = ({date, setDate}) => {
         <div style={{
             background: `url(${bg})`,
             backgroundSize: 'cover'
-        }} className="hero min-h-[450px] bg-base-100">
+        }} className="hero min-h-[500px] bg-base-100">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <img
                     src={chair}

@@ -6,6 +6,10 @@ import auth from "../../../../../firebase/firebase.init";
 
 const NavigationItems = () => {
     const [user] = useAuthState(auth);
+    const logOut = () => {
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+    };
 
     return (
         <>
@@ -18,12 +22,14 @@ const NavigationItems = () => {
             <li>
                 <NavLink to={"appointment"}>Appointment</NavLink>
             </li>
-            {/* <li>
-                <NavLink to={"reviews"}>Reviews</NavLink>
-            </li> */}
+            {user && (
+                <li>
+                    <NavLink to={"dashboard"}>Dashboard</NavLink>
+                </li>
+            )}
             {user ? (
                 <li>
-                    <NavLink onClick={() => signOut(auth)} to={"/login"}>
+                    <NavLink onClick={logOut} to={"/login"}>
                         Sign-Out
                     </NavLink>
                 </li>

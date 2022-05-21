@@ -8,14 +8,13 @@ const useToken = (user) => {
     useEffect(() => {
         const getToken = async () => {
             const email = user?.user?.email;
+            const currentUser = { email };
             if (email) {
                 setLoading(true);
-                const { data } = await axiosInstance.post("login", {
-                    email,
-                });
+                const { data } = await axiosInstance.put(`users/${email}`, currentUser);
                 setToken(data.accessToken);
                 localStorage.setItem("accessToken", data.accessToken);
-                setLoading(false)
+                setLoading(false);
             }
         };
         getToken();
