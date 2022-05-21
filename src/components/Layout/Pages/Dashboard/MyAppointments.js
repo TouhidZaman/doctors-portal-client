@@ -19,15 +19,15 @@ const MyAppointments = () => {
             .then((response) => response.data)
             .catch((error) => {
                 console.log("error res", error);
-                Swal.fire({
-                    icon: "error",
-                    title: `${error.response.status} !`,
-                    text: `${error.response.data.message}. Login again to continue`,
-                    // showConfirmButton: false,
-                    // timer: 2500,
-                });
-
+                
                 if (error.response.status === 401 || error.response.status === 403) {
+                    Swal.fire({
+                        icon: "error",
+                        title: `${error.response.status} !`,
+                        text: `${error.response.data.message}. Login again to continue`,
+                        // showConfirmButton: false,
+                        // timer: 2500,
+                    });
                     console.log("unauthorized user/access", error.response.status);
                     signOut(auth);
                     localStorage.removeItem("accessToken");
@@ -43,8 +43,8 @@ const MyAppointments = () => {
     }
 
     return (
-        <div class="overflow-x-auto px-4">
-            <table class="table w-full">
+        <div className="overflow-x-auto px-4">
+            <table className="table w-full">
                 <thead>
                     <tr>
                         <th></th>
